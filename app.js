@@ -131,7 +131,7 @@
             renderer.zoomToFit();
         });
 
-        new jsPlumbSyntaxHighlighter(toolkit, ".jtk-demo-dataset");
+        jsPlumbToolkitSyntaxHighlighter.newInstance(toolkit, ".jtk-demo-dataset");
 
         var layoutParams = {
             "Spring":{
