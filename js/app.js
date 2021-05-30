@@ -1,21 +1,13 @@
 ;
 (function () {
 
-    jsPlumbToolkit.ready(function () {
+    jsPlumbToolkitBrowserUI.ready(function () {
 
-        var toolkit = window.toolkit = jsPlumbToolkit.newInstance({
+        var toolkit = jsPlumbToolkitBrowserUI.newInstance({
             beforeStartDetach:function() { return false; }
         });
 
         var controls = document.querySelector(".controls");
-
-        jsPlumb.on(controls, "tap", "[undo]", function () {
-            undoredo.undo();
-        });
-
-        jsPlumb.on(controls, "tap", "[redo]", function () {
-            undoredo.redo();
-        });
 
         var view = {
             nodes: {
@@ -25,9 +17,9 @@
             },
             edges: {
                 "default": {
-                    connector: [ "StateMachine", { curviness: 10 } ],
+                    connector: { type:"StateMachine", options:{ curviness: 10 } },
                     paintStyle: { strokeWidth: 2, stroke: '#89bcde' },
-                    endpoints: [ [ "Dot", { radius: 4 } ], "Blank" ]
+                    endpoints: [ { type:"Dot", options:{ radius: 4 } }, "Blank" ]
                 }
             }
         };
@@ -44,8 +36,7 @@
         // make a random hierarchy and store how many nodes there are; we will use this when we add new nodes.
         var hierarchy = randomHierarchy();
 
-        var renderer = window.renderer = toolkit.load({type: "json", data: hierarchy}).render({
-            container: canvasElement,
+        var renderer = toolkit.load({type: "json", data: hierarchy}).render(canvasElement, {
             zoomToFit: true,
             view: view,
             layout: {
@@ -60,14 +51,14 @@
                     toolkit.clearSelection();
                 },
                 modeChanged: function (mode) {
-                    jsPlumb.removeClass(jsPlumb.getSelector("[mode]"), "selected-mode");
-                    jsPlumb.addClass(jsPlumb.getSelector("[mode='" + mode + "']"), "selected-mode");
+                    renderer.removeClass(renderer.getSelector("[mode]"), "selected-mode");
+                    renderer.addClass(renderer.getSelector("[mode='" + mode + "']"), "selected-mode");
                 }
             },
-            jsPlumb: {
-                Anchor: "Center",
-                EndpointStyle: { fill: "gray" },
-                EndpointHoverStyle: { fill: "#FF6600" }
+            defaults: {
+                anchor: "Center",
+                endpointStyle: { fill: "gray" },
+                endpointHoverStyle: { fill: "#FF6600" }
             },
             refreshLayoutOnEdgeConnect:true,
             elementsDraggable:false,
@@ -77,7 +68,15 @@
 
         });
 
-        var undoredo = window.undoredo = new jsPlumbToolkitUndoRedo({
+        renderer.on(controls, "tap", "[undo]", function () {
+            undoredo.undo();
+        });
+
+        renderer.on(controls, "tap", "[redo]", function () {
+            undoredo.redo();
+        });
+
+        var undoredo = jsPlumbToolkitUndoRedo.newInstance({
             surface:renderer,
             onChange:function(undo, undoSize, redoSize) {
                 controls.setAttribute("can-undo", undoSize > 0);
@@ -91,8 +90,7 @@
         // remove buttons. This callback finds the related Node and
         // then tells the toolkit to delete it.
         //
-        jsPlumb.on(canvasElement, "tap", ".delete", function (e) {
-            var info = toolkit.getObjectInfo(this);
+        renderer.bindModelEvent("tap", ".delete", function (event, target, info) {
             var selection = toolkit.selectDescendants(info.obj, true);
             undoredo.transaction(function() {
                 toolkit.remove(selection);
@@ -104,10 +102,7 @@
         // add buttons. This callback adds an edge from the given node
         // to a newly created node, and then the layout is refreshed.
         //
-        jsPlumb.on(canvasElement, "tap", ".add", function (e) {
-            // this helper method can retrieve the associated
-            // toolkit information from any DOM element.
-            var info = toolkit.getObjectInfo(this);
+        renderer.bindModelEvent("tap", ".add", function (event, target, info) {
             // get a random node.
             var n = jsPlumbToolkitDemoSupport.randomNode();
 
@@ -121,146 +116,118 @@
         });
 
         // pan mode/select mode
-        jsPlumb.on(mainElement, "tap", "[mode]", function () {
+        renderer.on(mainElement, "tap", "[mode]", function () {
             renderer.setMode(this.getAttribute("mode"));
         });
 
         // on home button tap, zoom content to fit.
-        jsPlumb.on(mainElement, "tap", "[reset]", function () {
+        renderer.on(mainElement, "tap", "[reset]", function () {
             toolkit.clearSelection();
             renderer.zoomToFit();
         });
 
-        new jsPlumbSyntaxHighlighter(toolkit, ".jtk-demo-dataset");
+        jsPlumbToolkitSyntaxHighlighter.newInstance(toolkit, ".jtk-demo-dataset");
 
         var layoutParams = {
             "Spring":{
                 absoluteBacked:false,
-                parameters:{
-                    padding:[50,50]
-                }
+                padding:{x:250,y:50}
             },
             "Hierarchical":{
-                parameters: {
-                    orientation: "horizontal",
-                    padding: [100, 60]
-                }
+                orientation: "horizontal",
+                padding: {x:100, y:60}
             },
             "HierarchicalCompressed":{
-                parameters: {
-                    orientation: "horizontal",
-                    padding: [30, 30],
-                    spacing:"compress"
-                }
+                orientation: "horizontal",
+                padding: {x:30,y:30},
+                spacing:"compress"
             },
             "HierarchicalAlignStart":{
-                parameters: {
-                    orientation: "horizontal",
-                    padding: [100, 60],
-                    align:"start"
-                }
+                orientation: "horizontal",
+                padding: {x:100, y:60},
+                align:"start"
             },
             "HierarchicalAlignEnd":{
-                parameters: {
-                    orientation: "horizontal",
-                    padding: [100, 60],
-                    align:"end"
-                }
+                orientation: "horizontal",
+                padding: {x:100, y:60},
+                align:"end"
             },
 
             "HierarchicalVertical":{
-                parameters: {
-                    orientation: "vertical",
-                    padding: [160, 60]
-                }
+                orientation: "vertical",
+                padding: {x:160, y:60}
             },
 
             "HierarchicalVerticalAlignStart":{
-                parameters: {
-                    orientation: "vertical",
-                    padding: [160, 60],
-                    align:"start"
-                }
+                orientation: "vertical",
+                padding: {x:160, y:60},
+                align:"start"
             },
             "HierarchicalVerticalAlignEnd":{
-                parameters: {
-                    orientation: "vertical",
-                    padding: [160, 60],
-                    align:"end"
-                }
+                orientation: "vertical",
+                padding: {x:160, y:60},
+                align:"end"
             },
 
             "HierarchicalInverted":{
-                parameters: {
-                    orientation: "horizontal",
-                    padding: [160, 60],
-                    invert:true
-                }
+                orientation: "horizontal",
+                padding: {x:160, y:60},
+                invert:true
             },
             "HierarchicalInvertedAlignStart":{
-                parameters: {
-                    orientation: "horizontal",
-                    padding: [160, 60],
-                    invert:true,
-                    align:"start"
-                }
+                orientation: "horizontal",
+                padding: {x:160, y:60},
+                invert:true,
+                align:"start"
             },
             "HierarchicalInvertedAlignEnd":{
-                parameters: {
-                    orientation: "horizontal",
-                    padding: [160, 60],
-                    invert:true,
-                    align:"end"
-                }
+                orientation: "horizontal",
+                padding: {x:160, y:60},
+                invert:true,
+                align:"end"
             },
 
             "HierarchicalVerticalInverted":{
-                parameters: {
-                    orientation: "vertical",
-                    padding: [160, 60],
-                    invert:true
-                }
+                orientation: "vertical",
+                padding: {x:160, y:60},
+                invert:true
             },
             "HierarchicalVerticalInvertedAlignStart":{
-                parameters: {
-                    orientation: "vertical",
-                    padding: [160, 60],
-                    invert:true,
-                    align:"start"
-                }
+                orientation: "vertical",
+                padding: {x:160, y:60},
+                invert:true,
+                align:"start"
             },
             "HierarchicalVerticalInvertedAlignEnd":{
-                parameters: {
-                    orientation: "vertical",
-                    padding: [160, 60],
-                    invert:true,
-                    align:"end"
-                }
+                orientation: "vertical",
+                padding: {x:160, y:60},
+                invert:true,
+                align:"end"
             },
 
             "Circular":{
-                parameters:{
-                    padding:15
-                }
+                padding:{x:15, y:15}
             },
             "CircularCenteredRoot":{
-                parameters:{
-                    padding:15,
-                    centerRootNode:true
-                }
+                padding:{x:15, y:15},
+                centerRootNode:true
             }
         };
 
         // change layout when user picks one from the drop down.
-        jsPlumb.on(layoutSelector, "change", function() {
+        renderer.on(layoutSelector, "change", function() {
             var opt = this.options[this.selectedIndex],
                 id = opt.value,
                 extra = opt.getAttribute("extra") || "",
                 paramKey = id + extra,
                 params = layoutParams[paramKey] || {},
-                lp = jsPlumb.extend({
-                    type:id
-                }, params || {});
+                // lp = jsPlumb.extend({
+                //     type:id
+                // }, params || {});
+                lp = {
+                    type:id,
+                    options:params
+                }
 
             renderer.setLayout(lp);
             renderer.zoomToFit();
@@ -268,14 +235,14 @@
             document.querySelector(".config pre").innerHTML = JSON.stringify(lp, 2, 2);
         });
 
-        jsPlumb.on(document.querySelector("#btnRegenerate"), "click", function() {
+        renderer.on(document.querySelector("#btnRegenerate"), "click", function() {
             toolkit.clear();
             toolkit.load({
                 data:randomHierarchy()
             });
         });
 
-        jsPlumb.on(document.querySelector("#btnRelayout"), "click", function() {
+        renderer.on(document.querySelector("#btnRelayout"), "click", function() {
             renderer.relayout();
         });
     });
