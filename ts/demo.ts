@@ -1,14 +1,15 @@
-import  { ready, newInstance, EVENT_TAP, EVENT_CLICK } from "@jsplumbtoolkit/browser-ui"
+import {EVENT_TAP, EVENT_CLICK, EVENT_CANVAS_CLICK} from "@jsplumbtoolkit/browser-ui"
+import {EndpointSpec, BlankEndpoint, DotEndpoint, TRUE, FALSE, AnchorLocations, DEFAULT} from "@jsplumb/core"
 import {randomHierarchy, randomNode} from "@jsplumb/toolkit-demo-support"
-import {EndpointSpec, BlankEndpoint, DotEndpoint, TRUE, FALSE } from "@jsplumb/core"
 import {StateMachineConnector} from "@jsplumb/connector-bezier"
 import {HierarchicalLayout} from "@jsplumbtoolkit/layout-hierarchical"
 import { UndoRedoUpdateParams, EVENT_UNDOREDO_UPDATE, ObjectInfo, Node } from "@jsplumbtoolkit/core"
-import {MiniviewPlugin} from "@jsplumbtoolkit/plugin-miniview"
+import {MiniviewPlugin} from "@jsplumbtoolkit/browser-ui-plugin-miniview"
 import {SpringLayout} from "@jsplumbtoolkit/layout-spring"
 import {CircularLayout} from "@jsplumbtoolkit/layout-circular"
 import { newInstance as newSyntaxHighlighter} from "@jsplumb/json-syntax-highlighter"
 
+import { ready, newInstance } from "@jsplumbtoolkit/browser-ui-vanilla"
 
 ready(function () {
 
@@ -20,12 +21,12 @@ ready(function () {
 
     const view = {
         nodes: {
-            "default": {
+            [DEFAULT]: {
                 templateId: "tmplNode"
             }
         },
         edges: {
-            "default": {
+            [DEFAULT]: {
                 connector: { type:StateMachineConnector.type, options:{ curviness: 10 } },
                 paintStyle: { strokeWidth: 2, stroke: '#89bcde' },
                 endpoints: [ { type:DotEndpoint.type, options:{ radius: 4 } }, BlankEndpoint.type ] as [EndpointSpec, EndpointSpec]
@@ -50,12 +51,12 @@ ready(function () {
             type: HierarchicalLayout.type
         },
         events: {
-            canvasClick: function (e) {
-                toolkit.clearSelection();
+            [EVENT_CANVAS_CLICK] :(e:Event) => {
+                toolkit.clearSelection()
             }
         },
         defaults: {
-            anchor: "Center",
+            anchor: AnchorLocations.Center,
             endpointStyle: { fill: "gray" },
             endpointHoverStyle: { fill: "#FF6600" }
         },
