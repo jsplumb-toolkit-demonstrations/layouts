@@ -1,14 +1,13 @@
 import {EVENT_TAP, EVENT_CLICK, EVENT_CANVAS_CLICK} from "@jsplumbtoolkit/browser-ui"
 import {BlankEndpoint, DotEndpoint} from "@jsplumb/core"
 import { EndpointSpec, TRUE, FALSE, AnchorLocations, DEFAULT} from "@jsplumb/common"
-import {randomHierarchy, randomNode} from "@jsplumb/toolkit-demo-support"
+import {randomHierarchy, randomNode} from "jsplumbtoolkit-demo-support"
 import {StateMachineConnector} from "@jsplumb/connector-bezier"
 import {HierarchicalLayout} from "@jsplumbtoolkit/layout-hierarchical"
 import { UndoRedoUpdateParams, EVENT_UNDOREDO_UPDATE, ObjectInfo, Node } from "@jsplumbtoolkit/core"
 import {MiniviewPlugin} from "@jsplumbtoolkit/browser-ui-plugin-miniview"
 import {SpringLayout} from "@jsplumbtoolkit/layout-spring"
 import {CircularLayout} from "@jsplumbtoolkit/layout-circular"
-import { newInstance as newSyntaxHighlighter} from "@jsplumb/json-syntax-highlighter"
 
 import { ready, newInstance } from "@jsplumbtoolkit/browser-ui-vanilla"
 
@@ -124,9 +123,6 @@ ready(function () {
     renderer.on(mainElement, EVENT_TAP, "[reset]", () => {
         renderer.zoomToFit()
     })
-
-    // create a syntax highlighter, to dump the current dataset to the screen
-    newSyntaxHighlighter(toolkit, ".jtk-demo-dataset");
 
     const layoutParams = {
         [SpringLayout.type]:{
