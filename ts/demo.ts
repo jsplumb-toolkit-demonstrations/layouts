@@ -1,4 +1,4 @@
-import {EndpointSpec, TRUE, FALSE, AnchorLocations, DEFAULT, BlankEndpoint, DotEndpoint, EVENT_TAP, EVENT_CLICK, EVENT_CANVAS_CLICK} from "@jsplumbtoolkit/browser-ui"
+import {EndpointSpec, TRUE, FALSE, AnchorLocations, DEFAULT, BlankEndpoint, DotEndpoint, EVENT_TAP, EVENT_CLICK, EVENT_CANVAS_CLICK, ready, newInstance} from "@jsplumbtoolkit/browser-ui"
 import {randomHierarchy, randomNode} from "jsplumbtoolkit-demo-support"
 import {StateMachineConnector} from "@jsplumb/connector-bezier"
 import {HierarchicalLayout} from "@jsplumbtoolkit/layout-hierarchical"
@@ -6,8 +6,6 @@ import { UndoRedoUpdateParams, EVENT_UNDOREDO_UPDATE, ObjectInfo, Node } from "@
 import {MiniviewPlugin} from "@jsplumbtoolkit/browser-ui-plugin-miniview"
 import {SpringLayout} from "@jsplumbtoolkit/layout-spring"
 import {CircularLayout} from "@jsplumbtoolkit/layout-circular"
-
-import { ready, newInstance } from "@jsplumbtoolkit/browser-ui-vanilla"
 
 ready(function () {
 
