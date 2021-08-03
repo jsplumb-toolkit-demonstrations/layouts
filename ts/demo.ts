@@ -1,6 +1,4 @@
-import {EVENT_TAP, EVENT_CLICK, EVENT_CANVAS_CLICK} from "@jsplumbtoolkit/browser-ui"
-import {BlankEndpoint, DotEndpoint} from "@jsplumb/core"
-import { EndpointSpec, TRUE, FALSE, AnchorLocations, DEFAULT} from "@jsplumb/common"
+import {EndpointSpec, TRUE, FALSE, AnchorLocations, DEFAULT, BlankEndpoint, DotEndpoint, EVENT_TAP, EVENT_CLICK, EVENT_CANVAS_CLICK} from "@jsplumbtoolkit/browser-ui"
 import {randomHierarchy, randomNode} from "jsplumbtoolkit-demo-support"
 import {StateMachineConnector} from "@jsplumb/connector-bezier"
 import {HierarchicalLayout} from "@jsplumbtoolkit/layout-hierarchical"
