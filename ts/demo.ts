@@ -205,7 +205,7 @@ ready(function () {
         },
         "CircularCenteredRoot":{
             padding:{x:15, y:15},
-            centerRootNode:true
+            centerRoot:true
         }
     };
 
