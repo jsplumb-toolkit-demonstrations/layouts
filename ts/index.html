@@ -13,8 +13,8 @@
 
 <!-- content -->
 <script type="jtk" id="tmplNode">
-    <div style="width:${w}px;height:${h}px;">
-        ${name}
+    <div style="width:{{w}}px;height:{{h}}px;">
+        {{name}}
         <div class="delete" title="Click to delete"></div>
         <div class="add" title="Add child node"></div>
     </div>
@@ -57,7 +57,8 @@
                         <option value="Hierarchical" extra="VerticalInvertedAlignStart">Hierarchical - vertical, inverted, align start</option>
                         <option value="Hierarchical" extra="VerticalInvertedAlignEnd">Hierarchical - vertical, inverted, align end</option>
 
-                        <option value="Spring">Spring</option>
+                        <option value="ForceDirected">ForceDirected</option>
+                        <option value="Spring">Spring (deprecated, use ForceDirected)</option>
                         <option value="Circular">Circular</option>
                         <option value="Circular" extra="CenteredRoot">Circular (root at center)</option>
                         <option value="Balloon">Balloon</option>
