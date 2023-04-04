@@ -1,12 +1,15 @@
-import {EndpointSpec, TRUE, FALSE, AnchorLocations, DEFAULT, BlankEndpoint, DotEndpoint, EVENT_TAP, EVENT_CLICK, EVENT_CANVAS_CLICK, ready, newInstance} from "@jsplumbtoolkit/browser-ui-vanilla-2"
 import {randomHierarchy, randomNode} from "jsplumbtoolkit-demo-support"
-import {StateMachineConnector} from "@jsplumb/connector-bezier"
-import {HierarchicalLayout} from "@jsplumbtoolkit/layout-hierarchical"
-import { UndoRedoUpdateParams, EVENT_UNDOREDO_UPDATE, ObjectInfo, Node } from "@jsplumbtoolkit/core"
-import {MiniviewPlugin} from "@jsplumbtoolkit/browser-ui-plugin-miniview"
-import {SpringLayout} from "@jsplumbtoolkit/layout-spring"
-import {ForceDirectedLayout} from "@jsplumbtoolkit/layout-force-directed"
-import {CircularLayout} from "@jsplumbtoolkit/layout-circular"
+import {
+    StateMachineConnector,
+    HierarchicalLayout,
+    UndoRedoUpdateParams,
+    EVENT_UNDOREDO_UPDATE,
+    ObjectInfo,
+    Node,
+    MiniviewPlugin,
+    ForceDirectedLayout,
+    CircularLayout,
+    EndpointSpec, TRUE, FALSE, AnchorLocations, DEFAULT, BlankEndpoint, DotEndpoint, EVENT_TAP, EVENT_CLICK, EVENT_CANVAS_CLICK, ready, newInstance} from "@jsplumbtoolkit/browser-ui"
 
 ready(function () {
 
@@ -124,10 +127,6 @@ ready(function () {
     const layoutParams = {
         [ForceDirectedLayout.type]:{
             absoluteBacked:false
-        },
-        [SpringLayout.type]:{
-            absoluteBacked:false,
-            padding:{x:250,y:50}
         },
         [HierarchicalLayout.type]:{
             orientation: "horizontal",
